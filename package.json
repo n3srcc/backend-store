@@ -1,0 +1,39 @@
+{
+  "name": "backend-store",
+  "version": "1.0.0",
+  "description": "Backend Store",
+  "main": "server",
+  "scripts": {
+    "test": "npm run test",
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/n3srcc/backend-store.git"
+  },
+  "author": "Eduardo M",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/n3srcc/backend-store/issues"
+  },
+  "homepage": "https://github.com/n3srcc/backend-store#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "multer": "^1.4.5-lts.1",
+    "mysql2": "^3.9.7",
+    "path": "^0.12.7",
+    "sequelize": "^6.37.3",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
+    "xlsx": "^0.18.5",
+    "yamljs": "^0.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0"
+  }
+}

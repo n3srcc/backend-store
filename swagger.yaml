@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  title: API Store
+  version: 1.0.0
+  description: Documentación con Swagger y OpenAPI 3.0
+paths:
+  /api/user/register:
+    post:
+      summary: Registra un nuevo usuario
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '201':
+          description: Usuario registrado exitosamente
+        '400':
+          description: El usuario ya existe
+        '500':
+          description: Error al registrar usuario
+  /api/user/auth:
+    post:
+      summary: Inicia sesión con las credenciales proporcionadas
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Sesión iniciada exitosamente
+        '401':
+          description: Credenciales incorrectas
+        '500':
+          description: Error al iniciar sesión
+  /api/user/forgot-password:
+    post:
+      summary: Envía un token para restablecer la contraseña
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+      responses:
+        '200':
+          description: Token de restablecimiento de contraseña enviado exitosamente
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error al procesar la solicitud
+  /api/user/reset-password:
+    post:
+      summary: Restablece la contraseña utilizando un token
+      tags:
+        - Users
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                newPassword:
+                  type: string
+      responses:
+        '200':
+          description: Contraseña restablecida exitosamente
+        '404':
+          description: Usuario no encontrado
+        '500':
+          description: Error al procesar la solicitud
+  /api/product:
+    get:
+      summary: Obtener todos los productos
+      tags:
+        - Products
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Lista de productos obtenida exitosamente
+        '500':
+          description: Error al obtener productos
+    post:
+      summary: Crear un nuevo producto
+      tags:
+        - Products
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '201':
+          description: Producto creado exitosamente
+        '500':
+          description: Error al crear producto
+  /api/product/{id}:
+    get:
+      summary: Obtener un producto por su ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Producto obtenido exitosamente
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error al obtener producto por ID
+    put:
+      summary: Actualizar un producto por su ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Product'
+      responses:
+        '200':
+          description: Producto actualizado exitosamente
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error al actualizar producto
+    delete:
+      summary: Eliminar un producto por su ID
+      tags:
+        - Products
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: string
+      security:
+        - BearerAuth: []
+      responses:
+        '200':
+          description: Producto eliminado exitosamente
+        '404':
+          description: Producto no encontrado
+        '500':
+          description: Error al eliminar producto
+  /api/product/import:
+    post:
+      summary: Importar productos desde un archivo
+      tags:
+        - Products
+      security:
+        - BearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+      responses:
+        '200':
+          description: Productos importados exitosamente
+        '400':
+          description: Formato de archivo no compatible
+        '500':
+          description: Error al cargar archivo
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        handle:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        sku:
+          type: string
+        grams:
+          type: number
+        stock:
+          type: integer
+        price:
+          type: number
+        compare_price:
+          type: number
+        barcode:
+          type: string
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+security:
+  - BearerAuth: []
+
