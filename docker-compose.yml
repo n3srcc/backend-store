@@ -1,26 +1,33 @@
 version: '3.8'
 
 services:
+  api:
+    container_name: api
+    build: .
+    restart: always
+    links:
+      - db
+    ports:
+      - "5000:5000"
+    depends_on:
+      db:
+        condition: service_healthy
+
   db:
     image: mariadb:lts
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
       MYSQL_DATABASE: $MYSQL_DATABASE
-      MYSQL_USER: $MYSQL_USER
-      MYSQL_PASSWORD: $MYSQL_PASSWORD
     volumes:
       - db_data:/var/lib/mysql
     ports:
       - "3306:3306"
-  api:
-    container_name: api
-    build: .
-    restart: always
-    ports:
-      - "5000:5000"
-    depends_on:
-      - db
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-p$MYSQL_ROOT_PASSWORD"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
 volumes:
   db_data:

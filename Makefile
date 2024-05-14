@@ -2,7 +2,7 @@ build:
 	docker-compose -f docker-compose.yml build
 
 run:
-	docker-compose -f docker-compose.yml --env-file .env up --build
+	docker-compose -f docker-compose.yml --env-file .env up -d --build
 
 stop:
 	docker-compose -f docker-compose.yml down -v
